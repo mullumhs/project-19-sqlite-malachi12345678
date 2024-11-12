@@ -74,3 +74,4 @@ if userinput == "d":
     cursor.execute('DROP TABLE movies')
 conn.commit()
 conn.close()
+
