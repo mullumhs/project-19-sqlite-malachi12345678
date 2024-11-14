@@ -86,9 +86,17 @@ def delete_movie(conn, title):
 
 def find_movies_by_director(conn, director):
 
-    # TODO: Find and display all movies by a specific director
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM movies WHERE director = ?''',(director,))
 
-    pass
+    director_movies = cursor.fetchall()
+
+    print(f"All movies by {director}:")
+
+    for movie in director_movies:
+
+        print(movie)
+
 
 
 
