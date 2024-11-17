@@ -42,6 +42,94 @@ def index():
 
 
 
+#add movie
+@app.route('/add', methods=['GET', 'POST'])
+
+def add_movie():
+
+    if request.method == 'POST':
+
+        new_movie = Movie(
+
+            title=request.form['title'],
+
+            director=request.form['director'],
+
+            year=int(request.form['year']),
+
+            rating=float(request.form['rating'])
+
+        )
+
+        db.session.add(new_movie)
+
+        db.session.commit()
+
+        return redirect(url_for('index'))
+
+    return render_template('add.html')
+
+
+#update
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+
+def edit_movie(id):
+
+    movie = Movie.query.get_or_404(id)
+
+    if request.method == 'POST':
+
+        movie.title = request.form['title']
+
+        movie.director = request.form['director']
+
+        movie.year = int(request.form['year'])
+
+        movie.rating = float(request.form['rating'])
+
+        db.session.commit()
+
+        return redirect(url_for('index'))
+
+    return render_template('edit.html', movie=movie)
+
+#delete
+@app.route('/delete/<int:id>')
+
+def delete_movie(id):
+
+    movie = Movie.query.get_or_404(id)
+
+    db.session.delete(movie)
+
+    db.session.commit()
+
+    return redirect(url_for('index'))
+
+#search
+@app.route('/search')
+
+def search_movies():
+
+    query = request.args.get('query', '')
+
+    # TODO: Use Flask-SQLAlchemy to search for movies
+
+    # Hint: You can use Movie.query.filter() with SQLAlchemy's like() method
+
+    movies = []  # Replace this with your query
+
+    return render_template('search.html', movies=movies, query=query)
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
 
     app.run(debug=True)
+
