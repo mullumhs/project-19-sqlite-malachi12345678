@@ -31,7 +31,7 @@ with app.app_context():
     db.create_all()
 
 
-
+#table display
 @app.route('/')
 
 def index():
@@ -109,15 +109,14 @@ def delete_movie(id):
 #search
 @app.route('/search')
 
-def search_movies():
+def search():
 
-    query = request.args.get('query', '')
+    if request.method == 'POST':
 
-    # TODO: Use Flask-SQLAlchemy to search for movies
+        query = request.form['title']
 
-    # Hint: You can use Movie.query.filter() with SQLAlchemy's like() method
 
-    movies = []  # Replace this with your query
+    movies = db.session.query(movies.title).filter(title = query).all()
 
     return render_template('search.html', movies=movies, query=query)
 
